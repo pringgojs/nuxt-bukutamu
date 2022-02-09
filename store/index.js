@@ -1,9 +1,9 @@
 export const state = () => ({
-  captureImgPath: null
+  captureImgPath: null,
 })
 
 export const mutations = {
   setImagePath(state, path) {
     state.captureImgPath = path
-  }
+  },
 }
