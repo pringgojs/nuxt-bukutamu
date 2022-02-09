@@ -6,8 +6,9 @@
           <v-card-title> {{ title }} </v-card-title>
           <v-card-text>Mohon lengkapi form dibawah ini</v-card-text>
           <v-col>
-            <v-text-field label="Nama Anda" outlined></v-text-field>
-            <v-text-field label="Instansi/SKPD" outlined></v-text-field>
+            <!-- <vue-web-camp ref="webcam" /> -->
+            <v-text-field :label="labels.name" outlined></v-text-field>
+            <v-text-field :label="labels.institution" outlined></v-text-field>
             <v-text-field
               type="number"
               label="No. Telepon"
@@ -45,9 +46,14 @@
 
 <script>
 export default {
-  data: function () {
+  data() {
     return {
-      title: 'Buku Tamu Kominfo',
+      title: 'Daftar Hadir Hari Pers Nasional (HPN) 2022',
+      labels: {
+        name: 'Nama Anda',
+        institution: 'Instansi / SKPD',
+        phone: 'No. Telepon',
+      },
     }
   },
   methods: {
