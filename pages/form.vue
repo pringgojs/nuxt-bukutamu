@@ -70,6 +70,14 @@
 
     <!-- dialog -->
     <CameraDialog ref="dlg" />
+
+    <!-- snackbar -->
+    <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" color="red accent-2">
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="light accent-2" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -114,6 +122,10 @@ export default {
           phone: '085736676648'
         },
       ],
+      snackbar: false,
+      snackbarText: 'My timeout is set to 2000.',
+      snackbarTimeout: 2000,
+
     }
   },
   methods: {
@@ -129,6 +141,31 @@ export default {
         });
     },
     save() {
+      
+
+      if (this.form.name == null) {
+        this.snackbar = true;
+        this.snackbarText = "Nama belum dilengkapi";
+        return;
+      }
+
+      if (this.form.institution == null) {
+        this.snackbar = true;
+        this.snackbarText = "Instansi/SKPD belum dilengkapi";
+        return;
+      }
+
+      if (this.form.phone == null) {
+        this.snackbar = true;
+        this.snackbarText = "No. Telepon belum dilengkapi";
+        return;
+      }
+
+      if (this.$store.state.captureImgPath == null) {
+        this.snackbar = true;
+        this.snackbarText = "Foto wajah belum dilengkapi";
+        return;
+      }
       let addGuest = {
         avatar: this.$store.state.captureImgPath,
         name: this.form.name,
