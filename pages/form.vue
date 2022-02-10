@@ -59,55 +59,7 @@
             </v-col>
 
             <v-col cols="6" class="pa-10">
-              <!-- <v-card-title>Data tamu</v-card-title> -->
-              <v-card max-width="450" class="mx-auto" min-height="600">
-                <v-toolbar color="cyan" dark>
-                  <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-                  <v-toolbar-title>Data Tamu</v-toolbar-title>
-
-                  <v-spacer></v-spacer>
-
-                  <v-btn icon>
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
-                </v-toolbar>
-
-                <v-list
-                  three-line
-                  style="max-height: 500px"
-                  class="overflow-y-auto"
-                >
-                  <template v-for="(item, index) in guests">
-                    <v-subheader
-                      v-if="item.header"
-                      :key="item.header"
-                      v-text="item.header"
-                    ></v-subheader>
-
-                    <v-divider
-                      v-else-if="item.divider"
-                      :key="index"
-                      :inset="item.inset"
-                    ></v-divider>
-
-                    <v-list-item v-else :key="item.name">
-                      <v-list-item-avatar>
-                        <v-img :src="item.avatar"></v-img>
-                      </v-list-item-avatar>
-
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-html="item.name"
-                        ></v-list-item-title>
-                        <v-list-item-subtitle
-                          v-html="item.institution + ' - ' + item.phone"
-                        ></v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </template>
-                </v-list>
-              </v-card>
+              <Gallery />
             </v-col>
           </v-row>
         </v-responsive>
@@ -139,9 +91,11 @@
 
 <script>
 import CameraDialog from '../components/CameraDialog.vue'
+import Gallery from '../components/Gallery.vue'
 export default {
   components: {
     CameraDialog,
+    Gallery,
   },
   data() {
     return {
@@ -158,27 +112,27 @@ export default {
         institution: 'Instansi / SKPD',
         phone: 'No. Telepon',
       },
-      guests: [
-        { header: 'Real Time User' },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          name: 'Pringgo Juni Saputro',
-          institution: 'Dinas Kominfo',
-          phone: '085736676648',
-        },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          name: 'Handi Setyawan',
-          institution: 'Dinas Perhubungan',
-          phone: '085736676648',
-        },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          name: 'Jhon Doe',
-          institution: 'Dinas Pekerjaan Umum',
-          phone: '085736676648',
-        },
-      ],
+      // guests: [
+      //   { header: 'Real Time User' },
+      //   {
+      //     avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+      //     name: 'Pringgo Juni Saputro',
+      //     institution: 'Dinas Kominfo',
+      //     phone: '085736676648',
+      //   },
+      //   {
+      //     avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+      //     name: 'Handi Setyawan',
+      //     institution: 'Dinas Perhubungan',
+      //     phone: '085736676648',
+      //   },
+      //   {
+      //     avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+      //     name: 'Jhon Doe',
+      //     institution: 'Dinas Pekerjaan Umum',
+      //     phone: '085736676648',
+      //   },
+      // ],
       snackbar: false,
       snackbarText: 'My timeout is set to 2000.',
       snackbarTimeout: 2000,
@@ -227,7 +181,21 @@ export default {
         phone: this.form.phone,
       }
 
-      this.guests.push({ ...addGuest })
+      this.$store.commit('addGuestList', addGuest)
+      console.log(this.$store.state.guestList)
+
+      this.resetForm()
+      this.snackbar = true
+      this.snackbarText = 'Data berhasil disimpan'
+
+      // this.guests.push({ ...addGuest })
+    },
+
+    resetForm() {
+      this.form.name = ''
+      this.form.institution = ''
+      this.form.phone = ''
+      this.$store.commit('setImagePath', '')
     },
   },
 }
