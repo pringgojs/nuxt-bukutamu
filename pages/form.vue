@@ -5,39 +5,19 @@
         <v-responsive>
           <v-row>
             <v-col cols="6" class="pa-10" style>
-              <v-card-title style="margin-left: -10px">{{
+              <v-card-title style="margin-left: -10px">
+                {{
                 title
-              }}</v-card-title>
-              <v-card-text style="margin-left: -10px"
-                >Mohon lengkapi form dibawah ini</v-card-text
-              >
+                }}
+              </v-card-title>
+              <v-card-text style="margin-left: -10px">Mohon lengkapi form dibawah ini</v-card-text>
               <!-- <vue-web-camp ref="webcam" /> -->
-              <v-text-field
-                :label="labels.name"
-                v-model="form.name"
-                outlined
-              ></v-text-field>
-              <v-text-field
-                :label="labels.institution"
-                v-model="form.institution"
-                outlined
-              ></v-text-field>
-              <v-text-field
-                type="number"
-                :label="labels.phone"
-                v-model="form.phone"
-                outlined
-              ></v-text-field>
+              <v-text-field :label="labels.name" v-model="form.name" outlined></v-text-field>
+              <v-text-field :label="labels.institution" v-model="form.institution" outlined></v-text-field>
+              <v-text-field type="number" :label="labels.phone" v-model="form.phone" outlined></v-text-field>
               <v-row>
                 <v-col>
-                  <v-btn
-                    v-on:click="openCam"
-                    class="white--text"
-                    fab
-                    icon
-                    small
-                    color="orange"
-                  >
+                  <v-btn v-on:click="openCam" class="white--text" fab icon small color="orange">
                     <v-icon dark>mdi-camera</v-icon>
                   </v-btn>
                 </v-col>
@@ -53,9 +33,7 @@
                   ></v-img>
                 </v-col>
               </v-row>
-              <v-btn color="primary" v-on:click="save()" elevation="2"
-                >Simpan</v-btn
-              >
+              <v-btn color="primary" v-on:click="save()" elevation="2">Simpan</v-btn>
             </v-col>
 
             <v-col cols="6" class="pa-10">
@@ -70,26 +48,17 @@
     <CameraDialog ref="dlg" />
 
     <!-- snackbar -->
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="snackbarTimeout"
-      color="red accent-2"
-    >
+    <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" color="red accent-2">
       {{ snackbarText }}
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="light accent-2"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-          >Close</v-btn
-        >
+        <v-btn color="light accent-2" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
       </template>
     </v-snackbar>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import CameraDialog from '../components/CameraDialog.vue'
 import Gallery from '../components/Gallery.vue'
 export default {
@@ -181,8 +150,19 @@ export default {
         phone: this.form.phone,
       }
 
-      this.$store.commit('addGuestList', addGuest)
-      console.log(this.$store.state.guestList)
+      let app = this;
+      axios.post('http://127.0.0.1:8000/guest/store', addGuest, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(function (response) {
+        app.$store.commit('addGuestInit', response.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
       this.resetForm()
       this.snackbar = true
@@ -197,6 +177,6 @@ export default {
       this.form.phone = ''
       this.$store.commit('setImagePath', '')
     },
-  },
+  }
 }
 </script>

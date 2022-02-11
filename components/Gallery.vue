@@ -2,7 +2,7 @@
   <v-card class="mx-auto" max-width="400" height="600">
     <!-- <v-img class="white--text align-end" height="200px" src="/img-1.jpg">
       <v-card-title>Top 10 Australian beaches</v-card-title>
-    </v-img> -->
+    </v-img>-->
     <v-carousel height="200" hide-delimiters cycle show-arrows-on-hover>
       <v-carousel-item
         v-for="(item, i) in items"
@@ -28,9 +28,7 @@
 
           <v-list-item-content>
             <v-list-item-title v-html="item.name"></v-list-item-title>
-            <v-list-item-subtitle
-              v-html="item.institution + ' - ' + item.phone"
-            ></v-list-item-subtitle>
+            <v-list-item-subtitle v-html="item.institution + ' - ' + item.phone"></v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -38,6 +36,7 @@
   </v-card>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -77,7 +76,10 @@ export default {
 
   mounted: function () {
     this.$nextTick(function () {
-      this.$store.commit('addGuestInit', this.guests)
+      let guests = axios
+        .get('http://127.0.0.1:8000/guest', {crossdomain: true }).then(res => {
+          this.$store.commit('addGuestInit', res.data)
+        });
     })
   },
 
