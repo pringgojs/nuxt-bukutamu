@@ -9,7 +9,7 @@
               <div class="text-h2 pa-12">Hello world!</div>
             </v-card-text>-->
             <v-row justify="center" class="mt-10 pb-10">
-              <v-card max-width="444" height="auto">
+              <v-card max-width="500" height="auto">
                 <video ref="video" id="video" width="100%" autoplay></video>
 
                 <v-card-actions>
@@ -22,7 +22,7 @@
                   >Capture</v-btn>
                 </v-card-actions>
               </v-card>
-              <v-card max-width="344" class="ml-5" elevation="0">
+              <v-card max-width="500" class="ml-5" elevation="0">
                 <canvas ref="canvas" id="canvas" width="640" height="380" style="display:none"></canvas>
               </v-card>
               <!-- <v-col cols="4" id="my_camera" style="padding-left:5px; border:1px solid #eee">hasd</v-col>
