@@ -23,12 +23,14 @@
       <template v-for="(item, index) in this.$store.state.guestList">
         <v-list-item :key="item.name">
           <v-list-item-avatar>
-            <v-img :src="item.avatar"></v-img>
+            <v-img :src="$config.apiUrl + '/' + item.avatar"></v-img>
           </v-list-item-avatar>
 
           <v-list-item-content>
             <v-list-item-title v-html="item.name"></v-list-item-title>
-            <v-list-item-subtitle v-html="item.institution + ' - ' + item.phone"></v-list-item-subtitle>
+            <v-list-item-subtitle
+              v-html="item.institution + ' - ' + item.phone"
+            ></v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -36,7 +38,7 @@
   </v-card>
 </template>
 <script>
-import axios from "axios";
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -75,11 +77,13 @@ export default {
   },
 
   mounted: function () {
+    let app = this
     this.$nextTick(function () {
       let guests = axios
-        .get('http://127.0.0.1:8000/guest', {crossdomain: true }).then(res => {
+        .get(app.$config.apiUrl + '/guest', { crossdomain: true })
+        .then((res) => {
           this.$store.commit('addGuestInit', res.data)
-        });
+        })
     })
   },
 
